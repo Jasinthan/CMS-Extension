@@ -144,7 +144,6 @@ class Handler(BaseHTTPRequestHandler):
         if type(recv) == dict:
             if 'PAGEINFO' in recv:
                 page_info = recv['PAGEINFO']
-                print (time.asctime(), 'Page info loaded')
             elif 'START' in recv:
 
                 # try:
@@ -163,8 +162,10 @@ class Handler(BaseHTTPRequestHandler):
                               ))(tag_name)] + list(map(lambda x: \
                         remove_front_trail(ascii_normalize(replace_unsupported_symbols(x))),
                         page_info['pageList']))
-                except TypeError:
+                    print (time.asctime(), 'Page info loaded')
+                except (TypeError, KeyError):
                     print("Cannot retrieve server number. You need to re-login into the CMS site.")
+                    current_status = {'status': 'Session Expired'}
                     sys.exit()
 
                             # Check URL

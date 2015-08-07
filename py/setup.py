@@ -5,7 +5,7 @@ import requests
 sys.argv.append('py2exe')
 
 setup(
-    version = "0.0.2",
+    version = "0.0.3",
     name = "CMS Extension Service",
     options = {
         'py2exe': {

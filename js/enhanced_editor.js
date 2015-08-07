@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        CMS Extension
 // @include     http://*.sharpschool.com/*
-// @version     1.0.1
+// @version     1.0.2
 // @grant       none
 // @description This script simplifies content migration.
 // @namespace https://greasyfork.org/users/14054
@@ -323,7 +323,7 @@ function sendElem(i) {
             checkStatus(function(data) {
                 stat = data.status;
                 setStatus(i, stat);
-                if (stat == 'Skipped' || stat.contains('Error')) {
+                if (stat == 'Skipped' || stat.contains('Error') || stat == 'Session Expired') {
                     clearInterval(realtimeStatus);
                     URLattr(i, data.URL);
                     sendElem(i + 1)

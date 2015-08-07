@@ -62,6 +62,8 @@ class URL:
             
         elif self.status_code // 100 == 3:
             loc = self.response.headers['location']
+            if urlparse(loc).scheme == "":
+                loc = urljoin(url, loc)
             self.get_headers_(loc, headers, verify)
 
         else:
