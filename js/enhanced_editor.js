@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        CMS Extension
 // @include     http://*.sharpschool.com/*
-// @version     1.0.0
+// @version     1.0.1
 // @grant       none
 // @description This script simplifies content migration.
 // @namespace https://greasyfork.org/users/14054
@@ -37,18 +37,14 @@ function detect() {
         method: 'HEAD',
         success: function() {
             main();
-            if (serverListener != undefined) {
-                clearInterval(serverListener)
-            }
-        }
-    })
-}
+            clearInterval(serverListener)
+            }})}
+            
 // Detect if server.exe is running every 2000 miliseconds; execute the rest only if the server.exe is on
 
-var serverListener = setInterval(function() {
-        detect()
-    }, 2000)
-    // Decides which part will be executed based on the page type
+var serverListener = setInterval(detect, 2000);
+    
+// Decides which part will be executed based on the page type
 function main() {
     if (Boolean(document.URL.match(/action=edit/i)) && Boolean(document.URL.match(/portletAction=pageedit/i))) {
         execContent();
@@ -274,6 +270,24 @@ function linkText(e) {
         return '<img>'
     }
 }
+
+// Scroll to the i-th row
+function animatedScrollTo(i) {
+    var offset = 140,
+        $row1 = $(".URLBox:eq(1)"),
+        s = ".URLBox:eq(" + String(i + 2) + ")",
+        $scrollBox = $("#scrollBox"),
+        $target = $(s);
+    try {
+        value = $target.get(0).offsetTop - $row1.get(0).offsetTop - offset
+    } catch (err) {
+        return
+    };
+    $scrollBox.animate({
+        scrollTop: value
+    }, 100)
+}
+
 // Display rows of URLs in the summary list, tag is either "IMG" or "A"
 
 function displayRows() {
@@ -286,9 +300,10 @@ function displayRows() {
         queue.push(addRow(this))
     });
 }
-// Start Button, i starts from 1 (first URL)
+// Start Button, i starts from 0 (first URL)
 
 function sendElem(i) {
+    animatedScrollTo(i);
     if (queue[i]) {
         $.ajax({
             url: server,
